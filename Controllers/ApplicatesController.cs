@@ -23,6 +23,7 @@ namespace klitatOved.Controllers
                 this.context = context;
             }
 
+        //בדיקה ראשונית של גיט
         //מתודה להגשת מועמדות
         [HttpPost("ApplyForJob")]
         public IActionResult Apply_For_Job([FromBody] JobApplicationsEO jobApplication)
