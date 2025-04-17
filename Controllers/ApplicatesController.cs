@@ -26,21 +26,18 @@ namespace klitatOved.Controllers
         //בדיקה ראשונית של גיט
         //מתודה להגשת מועמדות
         [HttpPost("ApplyForJob")]
-        public IActionResult Apply_For_Job([FromBody] JobApplicationsEO jobApplication)
+        public IActionResult Apply_For_Job([FromForm] JobApplicationsEO jobApplication)
         {
             var existApply = context.db_aplicatesJob.FirstOrDefault(ap => ap.CandidateId == jobApplication.CandidateId
             && ap.JobId == jobApplication.JobId);
             if (existApply != null)
                 return BadRequest("הוגשה מועמדות למשרה זו");
 
-            if (jobApplication.Candidate == null ||
-    string.IsNullOrWhiteSpace(jobApplication.Candidate.IdNumber) ||
-    jobApplication.Candidate.IdNumber.Length != 9 ||
-    !jobApplication.Candidate.IdNumber.All(char.IsDigit))
-            {
-                return BadRequest("הזן מספר זהות תקין כולל ספרת ביקורת");
-            }
 
+            if (jobApplication.CandidateId < 100000000 || jobApplication.CandidateId > 999999999)
+            {
+                return BadRequest("אנא הזן מספר זהות תקין בעל 9 ספרות");
+            }
 
             if (string.IsNullOrWhiteSpace(jobApplication.Email) || !Regex.IsMatch(jobApplication.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 return BadRequest("הזן כתובת מייל תקינה");

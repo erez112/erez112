@@ -32,8 +32,10 @@ namespace klitatOved.Controllers
             if (existCandidate != null)
                 return BadRequest("משתמש כבר קיים במערכת");
 
-            if (string.IsNullOrWhiteSpace(candidate.IdNumber) || candidate.IdNumber.Length != 9 || !candidate.IdNumber.All(char.IsDigit))
+            if (candidate.IdNumber < 100000000 || candidate.IdNumber > 999999999)
+            {
                 return BadRequest("אנא הזן מספר זהות תקין בעל 9 ספרות");
+            }
 
             if (string.IsNullOrWhiteSpace(candidate.FirstName) || !Regex.IsMatch(candidate.FirstName, @"^[א-ת]+$"))
                 return BadRequest("אנא הזן שם פרטי בעברית");
@@ -70,7 +72,7 @@ namespace klitatOved.Controllers
         //שליפת מועמדים
         [HttpGet("FindCandidate/{id}")]
 
-        public IActionResult GetCandits(string id)
+        public IActionResult GetCandits(int id)
         {
             var candidate = context.db_candidates.FirstOrDefault(c => c.IdNumber == id);
 
@@ -91,7 +93,7 @@ namespace klitatOved.Controllers
 
         //עדכון פרטי מועמדים
         [HttpPut("UpdateCandidate/{id}")]
-        public IActionResult Update_candidate(string id, [FromBody] CandidatesEO candidate)
+        public IActionResult Update_candidate(int id, [FromBody] CandidatesEO candidate)
         {
             var exist_candidate = context.db_candidates.FirstOrDefault(c => c.IdNumber == id);
             if (exist_candidate == null)

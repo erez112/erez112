@@ -33,7 +33,7 @@ namespace klitatOved.Entities
         public string Phone { get; set; }
 
         [Column("IdNumber")]
-        public string IdNumber { get; set; }
+        public int IdNumber { get; set; }
 
         [Column("UserName")]
         public string UserName { get; set; }
